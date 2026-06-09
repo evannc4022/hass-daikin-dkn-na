@@ -92,6 +92,10 @@ assistants.
 - **No units appear** — make sure the units are online in the app first, then
   reload the integration from **Settings → Devices & Services**.
 
+## Changelog
+
+See [CHANGELOG.md](CHANGELOG.md) for release notes.
+
 ## Disclaimer
 
 This is an unofficial, community-built integration. It is not affiliated with,
