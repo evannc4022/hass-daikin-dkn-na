@@ -5,8 +5,10 @@ from __future__ import annotations
 from typing import Any
 
 from homeassistant.components.climate import (
+    SWING_BOTH,
+    SWING_HORIZONTAL,
     SWING_OFF,
-    SWING_ON,
+    SWING_VERTICAL,
     ClimateEntity,
     ClimateEntityFeature,
     HVACMode,
@@ -138,16 +140,39 @@ class DknClimate(CoordinatorEntity[DknCoordinator], ClimateEntity):
         speed = self._device.fan_speed
         return str(speed) if speed is not None else None
 
-    # -- swing --------------------------------------------------------------
+    # -- swing (vertical and/or horizontal, per capability) -----------------
+    @property
+    def _swing_supported(self) -> bool:
+        d = self._device
+        return d.vertical_swing_available or d.horizontal_swing_available
+
     @property
     def swing_modes(self) -> list[str] | None:
-        return [SWING_OFF, SWING_ON] if self._device.swing_available else None
+        d = self._device
+        if not self._swing_supported:
+            return None
+        modes = [SWING_OFF]
+        if d.vertical_swing_available:
+            modes.append(SWING_VERTICAL)
+        if d.horizontal_swing_available:
+            modes.append(SWING_HORIZONTAL)
+        if d.vertical_swing_available and d.horizontal_swing_available:
+            modes.append(SWING_BOTH)
+        return modes
 
     @property
     def swing_mode(self) -> str | None:
-        if not self._device.swing_available:
+        if not self._swing_supported:
             return None
-        return SWING_ON if self._device.swinging else SWING_OFF
+        d = self._device
+        v, h = d.vertical_swinging, d.horizontal_swinging
+        if v and h:
+            return SWING_BOTH
+        if v:
+            return SWING_VERTICAL
+        if h:
+            return SWING_HORIZONTAL
+        return SWING_OFF
 
     # -- features -----------------------------------------------------------
     @property
@@ -159,7 +184,7 @@ class DknClimate(CoordinatorEntity[DknCoordinator], ClimateEntity):
         )
         if self._device.fan_speeds_available:
             features |= ClimateEntityFeature.FAN_MODE
-        if self._device.swing_available:
+        if self._swing_supported:
             features |= ClimateEntityFeature.SWING_MODE
         return features
 
@@ -208,9 +233,14 @@ class DknClimate(CoordinatorEntity[DknCoordinator], ClimateEntity):
 
     async def async_set_swing_mode(self, swing_mode: str) -> None:
         dev = self._device
-        on = swing_mode == SWING_ON
-        await dev.set_swing(on)
-        dev.data["slats_vertical_1"] = SLATS_SWING if on else SLATS_AUTO
+        want_v = swing_mode in (SWING_VERTICAL, SWING_BOTH)
+        want_h = swing_mode in (SWING_HORIZONTAL, SWING_BOTH)
+        if dev.vertical_swing_available:
+            await dev.set_vertical_swing(want_v)
+            dev.data["slats_vertical_1"] = SLATS_SWING if want_v else SLATS_AUTO
+        if dev.horizontal_swing_available:
+            await dev.set_horizontal_swing(want_h)
+            dev.data["slats_horizontal_1"] = SLATS_SWING if want_h else SLATS_AUTO
         self.async_write_ha_state()
 
     @callback

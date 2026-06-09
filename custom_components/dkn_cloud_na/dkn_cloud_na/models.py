@@ -218,13 +218,20 @@ class Device:
         return self.data.get("speed_state")
 
     @property
-    def swing_available(self) -> bool:
-        # Vertical louvre swing capability (slats_swingud in the model).
+    def vertical_swing_available(self) -> bool:
         return bool(self.data.get("slats_swingud"))
 
     @property
-    def swinging(self) -> bool:
+    def horizontal_swing_available(self) -> bool:
+        return bool(self.data.get("slats_swinglr"))
+
+    @property
+    def vertical_swinging(self) -> bool:
         return self.data.get("slats_vertical_1") == SLATS_SWING
+
+    @property
+    def horizontal_swinging(self) -> bool:
+        return self.data.get("slats_horizontal_1") == SLATS_SWING
 
     def setpoint_prop(self) -> Optional[str]:
         """Return the setpoint property name for the current mode/unit-type."""
@@ -269,9 +276,12 @@ class Device:
         lo, hi = self.target_range()
         return self._send(prop, _clamp(temperature, lo, hi))
 
-    def set_swing(self, on: bool):
-        # Vertical louvre: SLATS_SWING toggles oscillation, SLATS_AUTO parks it.
+    def set_vertical_swing(self, on: bool):
+        # SLATS_SWING toggles oscillation, SLATS_AUTO parks the louvre.
         return self._send("slats_vertical_1", SLATS_SWING if on else SLATS_AUTO)
+
+    def set_horizontal_swing(self, on: bool):
+        return self._send("slats_horizontal_1", SLATS_SWING if on else SLATS_AUTO)
 
     def __repr__(self) -> str:
         return f"<Device {self.mac} {self.name!r} mode={self.mode} on={self.is_on}>"
