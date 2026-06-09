@@ -18,6 +18,8 @@ from .const import (
     RANGE_PROPS_BY_MODE,
     SETPOINT_PROP_BY_MODE,
     SETPOINT_PROP_BY_MODE_WATER,
+    SLATS_AUTO,
+    SLATS_SWING,
     UNIT_FAHRENHEIT,
 )
 
@@ -215,6 +217,15 @@ class Device:
     def fan_speed(self) -> Optional[int]:
         return self.data.get("speed_state")
 
+    @property
+    def swing_available(self) -> bool:
+        # Vertical louvre swing capability (slats_swingud in the model).
+        return bool(self.data.get("slats_swingud"))
+
+    @property
+    def swinging(self) -> bool:
+        return self.data.get("slats_vertical_1") == SLATS_SWING
+
     def setpoint_prop(self) -> Optional[str]:
         """Return the setpoint property name for the current mode/unit-type."""
         table = SETPOINT_PROP_BY_MODE_WATER if self.is_water else SETPOINT_PROP_BY_MODE
@@ -257,6 +268,10 @@ class Device:
             raise ValueError(f"No setpoint property for mode {self.mode!r}")
         lo, hi = self.target_range()
         return self._send(prop, _clamp(temperature, lo, hi))
+
+    def set_swing(self, on: bool):
+        # Vertical louvre: SLATS_SWING toggles oscillation, SLATS_AUTO parks it.
+        return self._send("slats_vertical_1", SLATS_SWING if on else SLATS_AUTO)
 
     def __repr__(self) -> str:
         return f"<Device {self.mac} {self.name!r} mode={self.mode} on={self.is_on}>"

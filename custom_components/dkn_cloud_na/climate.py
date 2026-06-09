@@ -5,6 +5,8 @@ from __future__ import annotations
 from typing import Any
 
 from homeassistant.components.climate import (
+    SWING_OFF,
+    SWING_ON,
     ClimateEntity,
     ClimateEntityFeature,
     HVACMode,
@@ -24,6 +26,7 @@ from .dkn_cloud_na import (
     MODE_HEAT,
     Device,
 )
+from .dkn_cloud_na.const import SLATS_AUTO, SLATS_SWING
 
 from .const import DOMAIN
 from .coordinator import DknCoordinator
@@ -135,6 +138,17 @@ class DknClimate(CoordinatorEntity[DknCoordinator], ClimateEntity):
         speed = self._device.fan_speed
         return str(speed) if speed is not None else None
 
+    # -- swing --------------------------------------------------------------
+    @property
+    def swing_modes(self) -> list[str] | None:
+        return [SWING_OFF, SWING_ON] if self._device.swing_available else None
+
+    @property
+    def swing_mode(self) -> str | None:
+        if not self._device.swing_available:
+            return None
+        return SWING_ON if self._device.swinging else SWING_OFF
+
     # -- features -----------------------------------------------------------
     @property
     def supported_features(self) -> ClimateEntityFeature:
@@ -145,6 +159,8 @@ class DknClimate(CoordinatorEntity[DknCoordinator], ClimateEntity):
         )
         if self._device.fan_speeds_available:
             features |= ClimateEntityFeature.FAN_MODE
+        if self._device.swing_available:
+            features |= ClimateEntityFeature.SWING_MODE
         return features
 
     # -- commands (optimistic; the device-data echo reconciles) -------------
@@ -188,6 +204,13 @@ class DknClimate(CoordinatorEntity[DknCoordinator], ClimateEntity):
         dev = self._device
         await dev.set_fan_speed(int(fan_mode))
         dev.data["speed_state"] = int(fan_mode)
+        self.async_write_ha_state()
+
+    async def async_set_swing_mode(self, swing_mode: str) -> None:
+        dev = self._device
+        on = swing_mode == SWING_ON
+        await dev.set_swing(on)
+        dev.data["slats_vertical_1"] = SLATS_SWING if on else SLATS_AUTO
         self.async_write_ha_state()
 
     @callback

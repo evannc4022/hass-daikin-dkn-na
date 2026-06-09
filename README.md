@@ -25,7 +25,12 @@ DKN Cloud NA accounts that other Daikin/Airzone integrations don't support.
 ## Features
 
 - 🌡️ **Climate entity per unit** — on/off, HVAC mode (auto, cool, heat, fan, dry),
-  current temperature, target temperature and fan speed.
+  current temperature, target temperature, fan speed, and louvre swing (where the
+  unit supports it).
+- 📊 **Diagnostic sensors** — outdoor temperature, Wi-Fi signal, outdoor-unit
+  current draw and air quality (PM1 / PM2.5 / PM10), shown only when the hardware
+  reports them.
+- 🚦 **Status sensors** — connectivity and fault/problem binary sensors per unit.
 - ⚡ **Live updates** — state is pushed in real time; the integration does not
   poll, so it stays responsive without hammering the service.
 - 🏢 **Multiple homes/zones** — every installation and unit on your account is

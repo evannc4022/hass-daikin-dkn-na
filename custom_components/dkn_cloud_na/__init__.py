@@ -12,7 +12,11 @@ from .dkn_cloud_na import DknApiError, DknAuthError, DknConnectionError
 from .const import DOMAIN
 from .coordinator import DknCoordinator
 
-PLATFORMS: list[Platform] = [Platform.CLIMATE]
+PLATFORMS: list[Platform] = [
+    Platform.CLIMATE,
+    Platform.SENSOR,
+    Platform.BINARY_SENSOR,
+]
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
