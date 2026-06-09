@@ -47,6 +47,13 @@ DKN Cloud NA accounts that other Daikin/Airzone integrations don't support.
 
 ### HACS (recommended)
 
+[![Open your Home Assistant instance and open this repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=Suds-Lab&repository=hass-daikin-dkn-na&category=integration)
+
+Click the button above (requires [HACS](https://hacs.xyz)) to add this repository
+to HACS in one step, then **Download** it and **restart** Home Assistant.
+
+Or add it manually:
+
 1. In Home Assistant, open **HACS**.
 2. Click the **⋮** menu (top-right) → **Custom repositories**.
 3. Add the repository URL `https://github.com/Suds-Lab/hass-daikin-dkn-na`
